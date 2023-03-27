@@ -11,26 +11,24 @@ import { ToppingsService } from '../../services/toppings.service';
   selector: 'product-item',
   styleUrls: ['product-item.component.scss'],
   template: `
-    <div 
-      class="product-item">
+    <div class="product-item">
       <pizza-form
         [pizza]="pizza"
         [toppings]="toppings"
         (selected)="onSelect($event)"
         (create)="onCreate($event)"
         (update)="onUpdate($event)"
-        (remove)="onRemove($event)">
-        <pizza-display
-          [pizza]="visualise">
-        </pizza-display>
+        (remove)="onRemove($event)"
+      >
+        <pizza-display [pizza]="visualise"> </pizza-display>
       </pizza-form>
     </div>
   `,
 })
 export class ProductItemComponent implements OnInit {
-  pizza: Pizza;
-  visualise: Pizza;
-  toppings: Topping[];
+  pizza!: Pizza;
+  visualise!: Pizza;
+  toppings!: Topping[];
 
   constructor(
     private pizzaService: PizzasService,
@@ -40,27 +38,27 @@ export class ProductItemComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pizzaService.getPizzas().subscribe(pizzas => {
-      const param = this.route.snapshot.params.id;
-      let pizza;
+    this.pizzaService.getPizzas().subscribe((pizzas) => {
+      const param = this.route.snapshot.params['id'];
+      let pizza: any;
       if (param === 'new') {
         pizza = {};
       } else {
-        pizza = pizzas.find(pizza => pizza.id == parseInt(param, 10));
+        pizza = pizzas.find((pizza) => pizza.id == parseInt(param, 10));
       }
       this.pizza = pizza;
-      this.toppingsService.getToppings().subscribe(toppings => {
+      this.toppingsService.getToppings().subscribe((toppings) => {
         this.toppings = toppings;
-        this.onSelect(toppings.map(topping => topping.id));
+        this.onSelect(toppings.map((topping: any) => topping.id));
       });
     });
   }
 
   onSelect(event: number[]) {
-    let toppings;
+    let toppings: any;
     if (this.toppings && this.toppings.length) {
-      toppings = event.map(id =>
-        this.toppings.find(topping => topping.id === id)
+      toppings = event.map((id) =>
+        this.toppings.find((topping) => topping.id === id)
       );
     } else {
       toppings = this.pizza.toppings;
@@ -69,7 +67,7 @@ export class ProductItemComponent implements OnInit {
   }
 
   onCreate(event: Pizza) {
-    this.pizzaService.createPizza(event).subscribe(pizza => {
+    this.pizzaService.createPizza(event).subscribe((pizza) => {
       this.router.navigate([`/products/${pizza.id}`]);
     });
   }

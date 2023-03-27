@@ -20,12 +20,13 @@ const PIZZA_TOPPINGS_ACCESSOR = {
   styleUrls: ['pizza-toppings.component.scss'],
   template: `
     <div class="pizza-toppings">
-      <div 
+      <div
         class="pizza-toppings-item"
-        *ngFor="let topping of toppings;"
+        *ngFor="let topping of toppings"
         (click)="selectTopping(topping)"
-        [class.active]="existsInToppings(topping)">
-        <img src="/assets/img/toppings/singles/{{ topping.name }}.svg">
+        [class.active]="existsInToppings(topping)"
+      >
+        <img src="/assets/img/toppings/singles/{{ topping.name }}.svg" />
         {{ topping.name }}
       </div>
     </div>
@@ -36,8 +37,8 @@ export class PizzaToppingsComponent implements ControlValueAccessor {
 
   value: Topping[] = [];
 
-  private onTouch: Function;
-  private onModelChange: Function;
+  private onTouch!: Function;
+  private onModelChange!: Function;
 
   registerOnChange(fn: Function) {
     this.onModelChange = fn;
@@ -53,7 +54,7 @@ export class PizzaToppingsComponent implements ControlValueAccessor {
 
   selectTopping(topping: Topping) {
     if (this.existsInToppings(topping)) {
-      this.value = this.value.filter(item => item.id !== topping.id);
+      this.value = this.value.filter((item) => item.id !== topping.id);
     } else {
       this.value = [...this.value, topping];
     }
@@ -62,6 +63,6 @@ export class PizzaToppingsComponent implements ControlValueAccessor {
   }
 
   existsInToppings(topping: Topping) {
-    return this.value.some(val => val.id === topping.id);
+    return this.value.some((val) => val.id === topping.id);
   }
 }

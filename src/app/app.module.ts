@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,7 +28,8 @@ export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'products' },
   {
     path: 'products',
-    loadChildren: '../products/products.module#ProductsModule',
+    loadChildren: () =>
+      import('../products/products.module').then((m) => m.ProductsModule),
   },
 ];
 
