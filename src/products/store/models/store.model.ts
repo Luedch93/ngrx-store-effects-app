@@ -1,4 +1,4 @@
-import { Pizza } from './pizza.model';
+import { Pizza } from '../../models/pizza.model';
 
 export interface PizzasState {
   data: Pizza[];
@@ -6,6 +6,6 @@ export interface PizzasState {
   loading: boolean;
 }
 
-export interface ProductStore {
+export interface ProductState {
   pizzas: PizzasState;
 }

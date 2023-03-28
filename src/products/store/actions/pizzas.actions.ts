@@ -1,7 +1,8 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { Pizza } from 'src/products/models/pizza.model';
 
-export const productActions = createActionGroup({
+import { Pizza } from '../../models/pizza.model';
+
+export const pizzasActions = createActionGroup({
   source: '[Products]',
   events: {
     'Load Pizzas': emptyProps(),
