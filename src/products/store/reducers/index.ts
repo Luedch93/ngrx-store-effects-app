@@ -4,7 +4,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 
-import { ProductState } from '../models';
+import { PizzaEntities, ProductState } from '../models';
 import * as fromReducer from './pizzas.reducers';
 
 export const reducers: ActionReducerMap<ProductState> = {
@@ -16,9 +16,14 @@ export const getPizzaState = createSelector(
   getProductsState,
   (state: ProductState) => state.pizzas
 );
-export const getAllPizzas = createSelector(
+export const getPizzasEntities = createSelector(
   getPizzaState,
-  fromReducer.getPizzasData
+  fromReducer.getPizzasEntities
+);
+export const getAllPizzas = createSelector(
+  getPizzasEntities,
+  (entities: PizzaEntities) =>
+    Object.keys(entities).map((entityId) => entities[parseInt(entityId, 10)])
 );
 export const getPizzasLoading = createSelector(
   getPizzaState,

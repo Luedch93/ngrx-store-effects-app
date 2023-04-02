@@ -1,10 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { pizzasActions } from '../actions/pizzas.actions';
-import { PizzasState } from '../models';
+import { PizzaEntities, PizzasState } from '../models';
+import { Pizza } from '../../models/pizza.model';
 
 export const initialState: PizzasState = {
-  data: [],
+  entities: {},
   loaded: false,
   loading: false,
 };
@@ -15,12 +16,17 @@ export const pizzaReducer = createReducer(
     ...state,
     loading: true,
   })),
-  on(pizzasActions.loadPizzasSuccess, (state, { payload }) => ({
-    ...state,
-    loaded: true,
-    loading: false,
-    data: payload,
-  })),
+  on(pizzasActions.loadPizzasSuccess, (state, { payload }) => {
+    const pizzas = payload;
+    const entities = pizzas.reduce(
+      (entities: PizzaEntities, pizza: Pizza) => {
+        entities[pizza.id] = pizza;
+        return entities;
+      },
+      { ...state.entities }
+    );
+    return { ...state, loaded: true, loading: false, entities };
+  }),
   on(pizzasActions.loadPizzasError, (state, { payload }) => ({
     ...state,
     loading: false,
@@ -28,6 +34,6 @@ export const pizzaReducer = createReducer(
   }))
 );
 
-export const getPizzasData = (state: PizzasState) => state.data;
+export const getPizzasEntities = (state: PizzasState) => state.entities;
 export const getPizzasLoaded = (state: PizzasState) => state.loaded;
 export const getPizzasLoading = (state: PizzasState) => state.loading;
