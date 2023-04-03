@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,7 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeFreeze } from 'ngrx-store-freeze';
 
-import { reducers } from './store';
+import { reducers, CustomSerializer } from './store';
 
 // this would be done dynamically with webpack for builds
 const environment = {
@@ -24,7 +24,10 @@ export const metaReducers: MetaReducer<any>[] = !environment.production
 
 // bootstrap
 import { AppComponent } from './containers/app/app.component';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import {
+  RouterStateSerializer,
+  StoreRouterConnectingModule,
+} from '@ngrx/router-store';
 
 // routes
 export const ROUTES: Routes = [
@@ -45,6 +48,12 @@ export const ROUTES: Routes = [
     EffectsModule.forRoot([]),
     environment.development ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot(),
+  ],
+  providers: [
+    {
+      provide: RouterStateSerializer,
+      useClass: CustomSerializer,
+    },
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],
