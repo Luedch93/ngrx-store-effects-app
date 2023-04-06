@@ -27,13 +27,9 @@ export const pizzaReducer = createReducer(
     );
     return { ...state, loaded: true, loading: false, entities };
   }),
-  on(pizzasActions.loadPizzasError, (state, { payload }) => ({
+  on(pizzasActions.loadPizzasError, (state) => ({
     ...state,
     loading: false,
     loaded: false,
   }))
 );
-
-export const getPizzasEntities = (state: PizzasState) => state.entities;
-export const getPizzasLoaded = (state: PizzasState) => state.loaded;
-export const getPizzasLoading = (state: PizzasState) => state.loading;
