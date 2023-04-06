@@ -47,7 +47,11 @@ import { Topping } from '../../models/topping.model';
           <h4>Select toppings</h4>
         </label>
         <div class="pizza-form__list">
-          <pizza-toppings [toppings]="toppings" formControlName="toppings">
+          <pizza-toppings
+            *ngIf="toppings"
+            [toppings]="toppings"
+            formControlName="toppings"
+          >
           </pizza-toppings>
         </div>
 
@@ -87,7 +91,7 @@ export class PizzaFormComponent implements OnChanges {
   exists = false;
 
   @Input() pizza?: Pizza;
-  @Input() toppings!: Topping[];
+  @Input() toppings?: Topping[];
 
   @Output() selected = new EventEmitter<number[]>();
   @Output() create = new EventEmitter<Pizza>();

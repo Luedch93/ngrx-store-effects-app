@@ -8,7 +8,7 @@ import { PizzasService } from '../../../products/services';
 import { pizzasActions } from '../actions';
 
 @Injectable()
-export class MoviesEffects {
+export class PizzaEffects {
   loadPizzas$ = createEffect(() =>
     this.actions$.pipe(
       ofType(pizzasActions.loadPizzas),
