@@ -1,6 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-import { Topping } from '../../../products/models/topping.model';
+import { Topping } from '../../models/topping.model';
 
 export const toppingsActions = createActionGroup({
   source: 'Products',

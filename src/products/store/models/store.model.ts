@@ -1,13 +1,21 @@
 import { Pizza } from '../../models/pizza.model';
+import { Topping } from '../../models/topping.model';
 
 export interface PizzasState {
-  entities: PizzaEntities;
+  entities: Entities<Pizza>;
+  loaded: boolean;
+  loading: boolean;
+}
+
+export interface ToppingsState {
+  entities: Entities<Topping>;
   loaded: boolean;
   loading: boolean;
 }
 
 export interface ProductState {
   pizzas: PizzasState;
+  toppings: ToppingsState;
 }
 
-export type PizzaEntities = { [id: number]: Pizza };
+export type Entities<T> = { [id: number]: T };

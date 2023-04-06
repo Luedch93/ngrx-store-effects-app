@@ -1,8 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { pizzasActions } from '../actions/pizzas.actions';
-import { PizzaEntities, PizzasState } from '../models';
+import { PizzasState } from '../models';
 import { Pizza } from '../../models/pizza.model';
+import { mapToEntities } from '../../../app/utils/store.utils';
 
 export const initialState: PizzasState = {
   entities: {},
@@ -18,13 +19,7 @@ export const pizzaReducer = createReducer(
   })),
   on(pizzasActions.loadPizzasSuccess, (state, { payload }) => {
     const pizzas = payload;
-    const entities = pizzas.reduce(
-      (entities: PizzaEntities, pizza: Pizza) => {
-        entities[pizza.id] = pizza;
-        return entities;
-      },
-      { ...state.entities }
-    );
+    const entities = mapToEntities<Pizza>(pizzas);
     return { ...state, loaded: true, loading: false, entities };
   }),
   on(pizzasActions.loadPizzasError, (state) => ({

@@ -1,10 +1,12 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
 import { ProductState } from '../models';
-import * as fromReducer from './pizzas.reducers';
+import * as fromPizza from './pizzas.reducers';
+import * as fromToppings from './toppings.reducers';
 
 export const reducers: ActionReducerMap<ProductState> = {
-  pizzas: fromReducer.pizzaReducer,
+  pizzas: fromPizza.pizzaReducer,
+  toppings: fromToppings.toppingsReducer,
 };
 
 export const getProductsState = createFeatureSelector<ProductState>('products');
