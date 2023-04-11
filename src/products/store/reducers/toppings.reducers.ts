@@ -9,6 +9,7 @@ export const toppingsInitialState: ToppingsState = {
   entities: {},
   loading: false,
   loaded: false,
+  selectedToppings: [],
 };
 
 export const toppingsReducer = createReducer(
@@ -34,6 +35,12 @@ export const toppingsReducer = createReducer(
       ...state,
       loaded: false,
       loading: false,
+    };
+  }),
+  on(toppingsActions.visualizeToppings, (state, { payload }) => {
+    return {
+      ...state,
+      selectedToppings: payload,
     };
   })
 );

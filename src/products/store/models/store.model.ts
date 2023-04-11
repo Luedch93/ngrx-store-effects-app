@@ -11,6 +11,7 @@ export interface ToppingsState {
   entities: Entities<Topping>;
   loaded: boolean;
   loading: boolean;
+  selectedToppings: number[];
 }
 
 export interface ProductState {

@@ -8,5 +8,6 @@ export const toppingsActions = createActionGroup({
     'Load Toppings': emptyProps(),
     'Load Toppings Success': props<{ payload: Topping[] }>(),
     'Load Toppings Fail': props<{ payload: string }>(),
+    'Visualize toppings': props<{ payload: number[] }>(),
   },
 });

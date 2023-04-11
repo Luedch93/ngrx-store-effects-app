@@ -12,6 +12,8 @@ const toppingsList = (entities: Entities<Topping>): Topping[] => {
 };
 const toppingLoading = (toppingsState: ToppingsState) => toppingsState.loading;
 const toppingLoaded = (toppingsState: ToppingsState) => toppingsState.loaded;
+const toppingsSelected = (toppingsState: ToppingsState) =>
+  toppingsState.selectedToppings;
 
 export const getToppingsState = createSelector(getProductsState, toppingsState);
 export const getToppingsEntities = createSelector(
@@ -26,4 +28,8 @@ export const getToppingsLoading = createSelector(
 export const getToppingsLoaded = createSelector(
   getToppingsState,
   toppingLoaded
+);
+export const getSelectedToppings = createSelector(
+  getToppingsState,
+  toppingsSelected
 );
