@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
-import * as fromProducts from '../../store';
+import * as fromStore from '../../store';
 
 import { Pizza } from '../../models/pizza.model';
 import { Topping } from '../../models/topping.model';
@@ -35,15 +35,24 @@ export class ProductItemComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit() {
-    this.store.dispatch(fromProducts.toppingsActions.loadToppings());
-    this.pizza$ = this.store.select(fromProducts.getSelectedPizza);
-    this.toppings$ = this.store.select(fromProducts.getToppings);
-    this.visualize$ = this.store.select(fromProducts.getPizzaVisualized);
+    this.pizza$ = this.store.select(fromStore.getSelectedPizza).pipe(
+      tap((pizza: Pizza) => {
+        const pizzaExists = !!(pizza && pizza.toppings);
+        const toppings = pizzaExists
+          ? pizza.toppings?.map((topping) => topping.id)
+          : [];
+        this.store.dispatch(
+          fromStore.toppingsActions.visualizeToppings({ payload: toppings })
+        );
+      })
+    );
+    this.toppings$ = this.store.select(fromStore.getToppings);
+    this.visualize$ = this.store.select(fromStore.getPizzaVisualized);
   }
 
   onSelect(event: number[]) {
     this.store.dispatch(
-      fromProducts.toppingsActions.visualizeToppings({ payload: event })
+      fromStore.toppingsActions.visualizeToppings({ payload: event })
     );
   }
 
