@@ -27,19 +27,36 @@ export const pizzaReducer = createReducer(
     loading: false,
     loaded: false,
   })),
-  on(pizzasActions.createPizzaSuccess, (state, { payload }) => {
-    const entities = {
-      ...state.entities,
-      [payload.id]: payload,
-    };
+  on(
+    pizzasActions.createPizzaSuccess,
+    pizzasActions.updatePizzaSuccess,
+    (state, { payload }) => {
+      const entities = {
+        ...state.entities,
+        [payload.id]: payload,
+      };
+      return {
+        ...state,
+        entities,
+      };
+    }
+  ),
+  on(pizzasActions.deletePizzaSuccess, (state, { payload }) => {
+    const { [payload.id]: removed, ...entities } = state.entities;
+
     return {
       ...state,
       entities,
     };
   }),
-  on(pizzasActions.createPizzaFail, (state, { payload }) => {
-    return {
-      ...state,
-    };
-  })
+  on(
+    pizzasActions.createPizzaFail,
+    pizzasActions.updatePizzaFail,
+    pizzasActions.deletePizzaFail,
+    (state, { payload }) => {
+      return {
+        ...state,
+      };
+    }
+  )
 );

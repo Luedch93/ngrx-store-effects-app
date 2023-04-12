@@ -36,5 +36,35 @@ export class PizzaEffects {
     )
   );
 
+  updatedPizza$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(pizzasActions.updatePizza),
+      map((action) => action.payload),
+      switchMap((pizza) =>
+        this.pizzaService.updatePizza(pizza).pipe(
+          map((pizza) => pizzasActions.createPizzaSuccess({ payload: pizza })),
+          catchError((err) =>
+            of(pizzasActions.createPizzaFail({ payload: err }))
+          )
+        )
+      )
+    )
+  );
+
+  deletePizza$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(pizzasActions.deletePizza),
+      map((action) => action.payload),
+      switchMap((pizza) =>
+        this.pizzaService.removePizza(pizza).pipe(
+          map(() => pizzasActions.deletePizzaSuccess({ payload: pizza })),
+          catchError((err) =>
+            of(pizzasActions.deletePizzaFail({ payload: err }))
+          )
+        )
+      )
+    )
+  );
+
   constructor(private actions$: Actions, private pizzaService: PizzasService) {}
 }
