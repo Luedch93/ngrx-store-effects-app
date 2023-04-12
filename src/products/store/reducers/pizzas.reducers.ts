@@ -26,5 +26,20 @@ export const pizzaReducer = createReducer(
     ...state,
     loading: false,
     loaded: false,
-  }))
+  })),
+  on(pizzasActions.createPizzaSuccess, (state, { payload }) => {
+    const entities = {
+      ...state.entities,
+      [payload.id]: payload,
+    };
+    return {
+      ...state,
+      entities,
+    };
+  }),
+  on(pizzasActions.createPizzaFail, (state, { payload }) => {
+    return {
+      ...state,
+    };
+  })
 );

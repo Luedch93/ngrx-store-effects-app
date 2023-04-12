@@ -23,5 +23,18 @@ export class PizzaEffects {
     )
   );
 
+  createPizza$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(pizzasActions.createPizza),
+      map((action) => action.payload),
+      switchMap((pizza) =>
+        this.pizzaService.createPizza(pizza).pipe(
+          map((pizza) => pizzasActions.createPizzaSuccess({ payload: pizza })),
+          catchError((err) => of(pizzasActions.createPizzaFail(err)))
+        )
+      )
+    )
+  );
+
   constructor(private actions$: Actions, private pizzaService: PizzasService) {}
 }
