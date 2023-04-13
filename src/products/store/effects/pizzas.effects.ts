@@ -4,6 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { catchError, map, of, switchMap } from 'rxjs';
 
+import * as fromRoot from 'app/store';
 import { PizzasService } from '../../../products/services';
 import { pizzasActions } from '../actions';
 
@@ -36,15 +37,27 @@ export class PizzaEffects {
     )
   );
 
+  createPizzaSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(pizzasActions.createPizzaSuccess),
+      map((action) => action.payload),
+      map((pizza) => {
+        return fromRoot.routerActions.go({
+          payload: { path: ['/products', `${pizza.id}`] },
+        });
+      })
+    )
+  );
+
   updatedPizza$ = createEffect(() =>
     this.actions$.pipe(
       ofType(pizzasActions.updatePizza),
       map((action) => action.payload),
       switchMap((pizza) =>
         this.pizzaService.updatePizza(pizza).pipe(
-          map((pizza) => pizzasActions.createPizzaSuccess({ payload: pizza })),
+          map((pizza) => pizzasActions.updatePizzaSuccess({ payload: pizza })),
           catchError((err) =>
-            of(pizzasActions.createPizzaFail({ payload: err }))
+            of(pizzasActions.updatePizzaFail({ payload: err }))
           )
         )
       )
@@ -63,6 +76,18 @@ export class PizzaEffects {
           )
         )
       )
+    )
+  );
+
+  backToProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        pizzasActions.deletePizzaSuccess,
+        pizzasActions.updatePizzaSuccess
+      ),
+      map(() => {
+        return fromRoot.routerActions.go({ payload: { path: ['/products'] } });
+      })
     )
   );
 
